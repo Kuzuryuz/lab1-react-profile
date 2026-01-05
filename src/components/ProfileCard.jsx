@@ -14,6 +14,13 @@ function ProfileCard({ name, role, bio }) {
     }
   };
 
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const deleteSkill = (index) => {
+    const updatedSkills = skills.filter((_, i) => i !== index);
+    setSkills(updatedSkills);
+  };
+
   return (
     <div
       style={{
@@ -31,19 +38,55 @@ function ProfileCard({ name, role, bio }) {
       </p>
       <p>{bio}</p>
 
-      <div style={{ marginTop: 10 }}>
+      <div
+        style={{
+          marginBottom: 10,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <input
-          value={newSkill}
-          onChange={(e) => setNewSkill(e.target.value)}
-          placeholder="Add a new skill"
-          style={{ marginRight: 10 }}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search skills"
         />
-        <button onClick={addSkill}>Add Skill</button>
         <ul>
-          {skills.map((skill, index) => (
-            <li key={index}>{skill}</li>
-          ))}
+          {skills
+            .map((skill, i) => ({ skill, i }))
+            .filter(({ skill }) =>
+              skill.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map(({ skill, i }) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 5,
+                }}
+              >
+                <li
+                  style={{
+                    color: skill.includes("React") ? "blue" : undefined,
+                    fontWeight: skill.includes("React") ? "bold" : undefined,
+                  }}
+                >
+                  {skill}
+                </li>
+                <button onClick={() => deleteSkill(i)}>x</button>
+              </div>
+            ))}
         </ul>
+        <div>
+          <input
+            value={newSkill}
+            onChange={(e) => setNewSkill(e.target.value)}
+            placeholder="Add a new skill"
+            style={{ marginRight: 5 }}
+          />
+          <button onClick={addSkill}>Add Skill</button>
+        </div>
       </div>
 
       {/* ส่วนที่เพิ่มใหม่ */}
