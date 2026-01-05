@@ -1,5 +1,9 @@
 // src/components/ProfileCard.jsx
+import { useState } from "react";
+
 function ProfileCard({ name, role, bio }) {
+  const [likes, setLikes] = useState(0); // สร้าง State สำหรับเก็บจำนวน Like
+
   return (
     <div
       style={{
@@ -13,7 +17,11 @@ function ProfileCard({ name, role, bio }) {
         <strong>Role:</strong> {role}
       </p>
       <p>{bio}</p>
+
+      {/* ส่วนที่เพิ่มใหม่ */}
+      <button onClick={() => setLikes(likes + 1)}>💜 Like: {likes}</button>
     </div>
   );
 }
+
 export default ProfileCard;
